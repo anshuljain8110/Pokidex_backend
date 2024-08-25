@@ -1,28 +1,27 @@
-const express = require('express')
-const app = express()
+// index.js
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const connectDB = require('./models/dbconnect');
+const connectDB = require('./config/dbconnect');
 
+// Import routes
+const pokemonRoutes = require('./routes/main');
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// variables yet to be hidden in env files
-const PORT = 8080
-const SECRET_API_PATH = "/v1/hehehe"
+// Connect to database
 connectDB();
 
-// fetching the blue print
-const usersRoute = require('./routes/main')
-// const formsRoute = require('./Routes/forms')
+// Variables
+const PORT = process.env.PORT || 8080;
+const SECRET_API_PATH = "/v1/pokedex";
 
-app.use(SECRET_API_PATH,usersRoute)
-// app.use(SECRET_API_PATH+"/forms",formsRoute)
-
-
+// Use routes
+app.use(SECRET_API_PATH, pokemonRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`)
-})
+  console.log(`Server is running on port ${PORT}`);
+});
