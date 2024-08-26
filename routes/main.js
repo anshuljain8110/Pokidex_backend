@@ -62,4 +62,50 @@ router.get('/pokemons/:id', async (req, res) => {
   }
 });
 
+// Update a Pokémon by ID
+router.put('/pokemons/:id', async (req, res) => {
+  try {
+    const updatedPokemon = await Pokemon.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    if (!updatedPokemon) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Pokémon not found'
+      });
+    }
+    res.status(200).json({
+      status: 'success',
+      data: updatedPokemon
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({
+      status: 'fail',
+      message: err.message
+    });
+  }
+});
+
+// Delete a Pokémon by ID
+router.delete('/pokemons/:id', async (req, res) => {
+  try {
+    const deletedPokemon = await Pokemon.findByIdAndDelete(req.params.id);
+    if (!deletedPokemon) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Pokémon not found'
+      });
+    }
+    res.status(204).json({
+      status: 'success',
+      data: null
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
