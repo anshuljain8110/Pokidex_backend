@@ -59,7 +59,7 @@ class Apifeatures {
 
     paginate() {
         const page = this.queryStr.page * 1 || 1;
-        const limits = this.queryStr.limit * 1 || 10;
+        const limits = this.queryStr.limit * 1 || 16;
         const skip = (page - 1) * limits;
         this.query = this.query.skip(skip).limit(limits);
         return this;

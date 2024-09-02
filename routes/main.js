@@ -33,7 +33,7 @@ router.get('/pokemons', async (req, res) => {
     const totalCollections = await Pokemon.countDocuments();
     res.status(200).json({
       status: 'success',
-      totalPages: Math.ceil(totalCollections / (req.query.limit || 10)),
+      totalPages: Math.ceil(totalCollections / (req.query.limit || 16)),
       data: pokemons
     });
   } catch (err) {
@@ -45,7 +45,7 @@ router.get('/pokemons', async (req, res) => {
 // Get Pokémon by name or ID
 router.get('/pokemons/:id', async (req, res) => {
   try {
-    const pokemon = await Pokemon.findOne({ 'name.english': req.params.id }) || await Pokemon.findById(req.params.id);
+    const pokemon = await Pokemon.findOne({ "id": req.params.id }) || await Pokemon.findById(req.params.id);
     if (!pokemon) {
       return res.status(404).json({
         status: 'fail',
